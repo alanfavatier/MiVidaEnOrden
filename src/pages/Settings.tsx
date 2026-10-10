@@ -97,7 +97,8 @@ export function SettingsPage() {
             <div>
               <div style={{ fontWeight: 650 }}>Tema</div>
               <div className="tiny muted">
-                Actual: {data.preferences.theme === 'dark' ? 'oscuro' : 'claro'}
+                Actual:{' '}
+                {data.preferences.theme === 'dark' ? 'oscuro' : data.preferences.theme === 'pink' ? 'rosa' : 'claro'}
               </div>
             </div>
             <div className="pill-toggle">
@@ -114,6 +115,13 @@ export function SettingsPage() {
                 onClick={() => updatePreferences({ theme: 'light' })}
               >
                 <Icon name="sun" size={14} /> Claro
+              </button>
+              <button
+                type="button"
+                className={data.preferences.theme === 'pink' ? 'is-active' : ''}
+                onClick={() => updatePreferences({ theme: 'pink' })}
+              >
+                <Icon name="heart" size={14} /> Rosa
               </button>
             </div>
           </div>

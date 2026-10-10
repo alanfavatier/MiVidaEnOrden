@@ -13,6 +13,7 @@ import {
   StorageError,
   isValidHabit,
   isValidTransaction,
+  isValidPreferences,
   DEFAULT_PREFERENCES,
 } from './storage';
 import { createSeedHabits, createSeedGoals } from './seed';
@@ -142,5 +143,22 @@ describe('storage', () => {
     expect(isValidTransaction({ ...base, type: 'gasto', amount: -1 })).toBe(false);
     expect(isValidTransaction({ ...base, type: 'gasto', amount: '10' })).toBe(false);
     expect(isValidTransaction(null)).toBe(false);
+  });
+
+  it('isValidPreferences acepta los tres temas y rechaza otros valores', () => {
+    expect(isValidPreferences({ theme: 'dark', name: '' })).toBe(true);
+    expect(isValidPreferences({ theme: 'light', name: 'Alan' })).toBe(true);
+    expect(isValidPreferences({ theme: 'pink', name: '' })).toBe(true);
+    expect(isValidPreferences({ theme: 'blue', name: '' })).toBe(false);
+    expect(isValidPreferences({ theme: 1, name: '' })).toBe(false);
+    expect(isValidPreferences({ theme: 'dark', name: 5 })).toBe(false);
+    expect(isValidPreferences(null)).toBe(false);
+  });
+
+  it('loadAllData conserva el tema rosa guardado', () => {
+    persist(STORAGE_KEYS.preferences, { theme: 'pink', name: 'Ana' });
+    const data = loadAllData();
+    expect(data.preferences.theme).toBe('pink');
+    expect(data.preferences.name).toBe('Ana');
   });
 });

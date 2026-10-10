@@ -167,7 +167,7 @@ export function isValidChallenge(v: unknown): v is Challenge {
 
 export function isValidPreferences(v: unknown): v is Preferences {
   if (!isObj(v)) return false;
-  if (v.theme !== 'dark' && v.theme !== 'light') return false;
+  if (v.theme !== 'dark' && v.theme !== 'light' && v.theme !== 'pink') return false;
   if (!isStr(v.name)) return false;
   return true;
 }

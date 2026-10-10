@@ -4,7 +4,7 @@ PWA ( Progressive Web App ) personal para organizar **objetivos, hábitos, agend
 
 - **Interfaz en español**, fechas en formato **DD/MM/AAAA**, moneda en **pesos argentinos (ARS)**.
 - Diseño **mobile-first**: navegación inferior en el teléfono y lateral en pantallas grandes.
-- Tema **claro / oscuro**.
+- Tema **claro / oscuro / rosa** (se cicla desde el encabezado o se elige en Ajustes).
 - Se puede **instalar en Android e iPhone** y usar en modo avión.
 
 ---

@@ -143,7 +143,7 @@ export interface Challenge {
 }
 
 export interface Preferences {
-  theme: 'dark' | 'light';
+  theme: 'dark' | 'light' | 'pink';
   /** Nombre opcional que se usa en el saludo. */
   name: string;
 }

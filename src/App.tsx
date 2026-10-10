@@ -9,6 +9,7 @@ import { AgendaPage } from './pages/Agenda';
 import { FinancesPage } from './pages/Finances';
 import { SettingsPage } from './pages/Settings';
 import type { Route } from './pages/types';
+import type { Preferences } from './types';
 
 const NAV: { route: Route; label: string; icon: IconName; title: string }[] = [
   { route: 'inicio', label: 'Inicio', icon: 'home', title: 'Inicio' },
@@ -18,6 +19,19 @@ const NAV: { route: Route; label: string; icon: IconName; title: string }[] = [
   { route: 'finanzas', label: 'Finanzas', icon: 'wallet', title: 'Finanzas personales' },
   { route: 'ajustes', label: 'Ajustes', icon: 'settings', title: 'Configuración' },
 ];
+
+// Temas disponibles: se ciclan con el botón del encabezado.
+type ThemeName = Preferences['theme'];
+const THEMES: ThemeName[] = ['dark', 'light', 'pink'];
+const THEME_LABEL: Record<ThemeName, string> = { dark: 'oscuro', light: 'claro', pink: 'rosa' };
+const THEME_META: Record<ThemeName, string> = { dark: '#0f1115', light: '#f4f6fb', pink: '#fff1f6' };
+// Ícono del tema AL QUE se va a cambiar.
+const THEME_ICON: Record<ThemeName, IconName> = { dark: 'moon', light: 'sun', pink: 'heart' };
+
+function nextTheme(t: ThemeName): ThemeName {
+  const i = THEMES.indexOf(t);
+  return THEMES[(i + 1) % THEMES.length];
+}
 
 function isValidRoute(v: string): v is Route {
   return NAV.some((n) => n.route === v);
@@ -47,11 +61,11 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Tema claro/oscuro.
+  // Tema (oscuro / claro / rosa).
   useEffect(() => {
     document.documentElement.dataset.theme = data.preferences.theme;
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', data.preferences.theme === 'dark' ? '#0f1115' : '#f4f6fb');
+    if (meta) meta.setAttribute('content', THEME_META[data.preferences.theme]);
   }, [data.preferences.theme]);
 
   // Aviso no bloqueante (errores de guardado, etc.).
@@ -98,15 +112,11 @@ export default function App() {
           </span>
           <button
             className="icon-btn"
-            onClick={() =>
-              updatePreferences({
-                theme: data.preferences.theme === 'dark' ? 'light' : 'dark',
-              })
-            }
-            aria-label={data.preferences.theme === 'dark' ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro'}
+            onClick={() => updatePreferences({ theme: nextTheme(data.preferences.theme) })}
+            aria-label={`Cambiar tema (actual: ${THEME_LABEL[data.preferences.theme]})`}
             title="Cambiar tema"
           >
-            <Icon name={data.preferences.theme === 'dark' ? 'sun' : 'moon'} />
+            <Icon name={THEME_ICON[nextTheme(data.preferences.theme)]} />
           </button>
         </div>
       </header>
